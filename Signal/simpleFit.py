@@ -9,7 +9,7 @@ from collections import OrderedDict as od
 ROOT.gROOT.SetBatch(True)
 
 # Open ROOT file storing datasets
-f = ROOT.TFile("/vols/cms/jl2117/hgg/ws/UL/Sept20/MC_final/signal_2016/output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_GG2H_0J_PTH_0_10.root")
+f = ROOT.TFile("/afs/cern.ch/work/j/jlangfor/public/ForRajdeep/output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_GG2H_0J_PTH_0_10.root")
 ws = f.Get("tagsDumper/cms_hgg_13TeV")
 xvar = ws.var("CMS_hgg_mass") # Could also build this manually rather than extracting from workspace (RooRealVar)
 

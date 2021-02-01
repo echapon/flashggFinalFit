@@ -43,7 +43,7 @@ pLUT['Gaussian'] = od()
 pLUT['Gaussian']['dm_p0'] = [0.1,-1.5,1.5]
 pLUT['Gaussian']['dm_p1'] = [0.0,-0.01,0.01]
 pLUT['Gaussian']['dm_p2'] = [0.0,-0.01,0.01]
-pLUT['Gaussian']['sigma_p0'] = ['func',0.5,10.0]
+pLUT['Gaussian']['sigma_p0'] = ['func',0.0001,10.0]
 pLUT['Gaussian']['sigma_p1'] = [0.0,-0.01,0.01]
 pLUT['Gaussian']['sigma_p2'] = [0.0,-0.01,0.01]
 pLUT['FracGaussian'] = od()
@@ -62,6 +62,7 @@ def calcChi2(x,pdf,d,errorType="SumW2",_verbose=False):
     # Calc number of events in bin
     nData = d.weight()
     # If dataEntries == 0 then skip point
+    if _verbose: print(i,nData)
     if nData*nData == 0: continue
     nPdf = pdf.getVal(ROOT.RooArgSet(x))*normFactor*d.binVolume()
     diff = nPdf-nData
@@ -88,7 +89,7 @@ def calcChi2(x,pdf,d,errorType="SumW2",_verbose=False):
   return result, k
   
 # Function to add chi2 for multiple mass points
-def nChi2Addition(X,ssf):
+def nChi2Addition(X,ssf,_verbose=False):
   # X: vector of param values (updated with minimise function)
   # Loop over parameters and set RooVars
   for i in range(len(X)): ssf.FitParameters[i].setVal(X[i])
@@ -98,7 +99,7 @@ def nChi2Addition(X,ssf):
   C = len(X)-1 # number of fit params (-1 for MH)
   for mp,d in ssf.DataHists.iteritems():
     ssf.MH.setVal(int(mp))
-    chi2, k  = calcChi2(ssf.xvar,ssf.Pdfs['final'],d)
+    chi2, k  = calcChi2(ssf.xvar,ssf.Pdfs['final'],d,_verbose=_verbose)
     chi2sum += chi2
     K += k
   # N degrees of freedom
@@ -109,6 +110,7 @@ def nChi2Addition(X,ssf):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
 class SimultaneousFit:
   # Constructor
+<<<<<<< HEAD
   def __init__(self,_name,_proc,_cat,_datasetForFit,_xvar,_MH,_MHLow,_MHHigh,_massPoints,_nBins,_MHPolyOrder,_minimizerMethod,_minimizerTolerance,verbose=True):
     self.name = _name
     self.proc = _proc
@@ -213,7 +215,6 @@ class SimultaneousFit:
     self.Polynomials[k] = ROOT.RooPolyVar(k,k,self.dMH,self.Varlists[k])
     # Build Gaussian
     self.Pdfs['gaus'] = ROOT.RooGaussian("gaus","gaus",self.xvar,self.Polynomials['mean_dcb'],self.Polynomials['sigma_gaus'])
-    
         
     # Relative fraction: also polynomial of order MHPolyOrder
     self.Varlists['frac'] = ROOT.RooArgList("frac_coeffs")
@@ -225,10 +226,20 @@ class SimultaneousFit:
     # Constrain fraction to not be above 1 or below 0
     self.Polynomials['frac_constrained'] = ROOT.RooFormulaVar("frac_constrained","frac_constrained","(@0>0)*(@0<1)*@0+(@0>1.0)*0.9999",ROOT.RooArgList(self.Polynomials['frac']))
     self.Coeffs['frac_constrained'] = self.Polynomials['frac_constrained' ]
+    
+    # # add a pol2 for possible "grass"
+    # f = "bkg"
+    # k = "%s_p"%f
+    # self.Varlists[k] = ROOT.RooArgList("%s_coeffs"%k)    
+    # # Create coeff for polynominal of order MHPolyOrder: y = a+bx+cx^2+...
+    # for po in range(0,self.BkgPolyOrder+1):
+    #   self.Vars['%s_p%g'%(k,po)] = ROOT.RooRealVar("%s_p%g"%(k,po),"%s_p%g"%(k,po),0,-1,1)
+    #   self.Varlists[k].add( self.Vars['%s_p%g'%(k,po)] )
+    # self.Pdfs['bkg'] = ROOT.RooChebychev("bkg","bkg",self.xvar,sel.VarLists[k])
 
     # Define total PDF
     _pdfs, _coeffs = ROOT.RooArgList(), ROOT.RooArgList()
-    for pdf in ['dcb','gaus']: _pdfs.add(self.Pdfs[pdf])
+    for pdf in ['dcb','gaus','bkg']: _pdfs.add(self.Pdfs[pdf])
     _coeffs.add(self.Coeffs['frac_constrained'])
     self.Pdfs['final'] = ROOT.RooAddPdf("%s_%s"%(self.proc,self.cat),"%s_%s"%(self.proc,self.cat),_pdfs,_coeffs,_recursive)
     
@@ -274,6 +285,16 @@ class SimultaneousFit:
 	self.Polynomials['frac_g%g_constrained'%g] = ROOT.RooFormulaVar('frac_g%g_constrained'%g,'frac_g%g_constrained'%g,"(@0>0)*(@0<1)*@0+ (@0>1.0)*0.9999",ROOT.RooArgList(self.Polynomials['frac_g%g'%g]))
 	self.Coeffs['frac_g%g_constrained'%g] = self.Polynomials['frac_g%g_constrained'%g]
     # End of loop over n Gaussians
+    
+    # # add a pol2 for possible "grass"
+    # f = "bkg"
+    # k = "%s_p"%f
+    # self.Varlists[k] = ROOT.RooArgList("%s_coeffs"%k)    
+    # # Create coeff for polynominal of order MHPolyOrder: y = a+bx+cx^2+...
+    # for po in range(0,self.BkgPolyOrder+1):
+    #   self.Vars['%s_p%g'%(k,po)] = ROOT.RooRealVar("%s_p%g"%(k,po),"%s_p%g"%(k,po),0,-1,1)
+    #   self.Varlists[k].add( self.Vars['%s_p%g'%(k,po)] )
+    # self.Pdfs['bkg'] = ROOT.RooChebychev("bkg","bkg",self.xvar,sel.VarLists[k])
     
     # Define total PDF
     _pdfs, _coeffs = ROOT.RooArgList(), ROOT.RooArgList()
@@ -341,9 +362,9 @@ class SimultaneousFit:
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
   # Function to re-calculate chi2 after setting vars
-  def getChi2(self):
+  def getChi2(self, _verbose=False):
     x = self.extractX0()
-    self.Chi2 = nChi2Addition(x,self)
+    self.Chi2 = nChi2Addition(x,self,_verbose)
     return self.Chi2
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
