@@ -1,0 +1,5 @@
+# the following will do the profLH scan as a function of MH
+python ../RunFits.py --inputJson inputs_MH.json --mode HGG_Legacy2016 [--doObserved] [--dryRun]
+
+# the following will plot the results
+python ../CollectFits.py --inputJson inputs_MH.json --mode HGG_Legacy2016 [--doObserved]
