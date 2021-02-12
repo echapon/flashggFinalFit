@@ -23,6 +23,36 @@ globalReplacementMap["example"]["catRVMap"] = od()
 globalReplacementMap["example"]["catRVMap"]["Untagged_Tag0"] = "Untagged_Tag0"
 globalReplacementMap["example"]["catRVMap"]["VBF_Tag0"] = "VBF_Tag0"
 
+#################
+# mass analysis #
+#################
+globalReplacementMap['mass'] = od()
+# For WRONG VERTEX SCENARIO:
+#  * single proc x cat for wrong vertex since for dZ > 1cm shape independent of proc x cat
+#  * use proc x cat with highest number of WV events
+globalReplacementMap['mass']['procWV'] = "GG2H"
+globalReplacementMap['mass']['catWV'] = "Untagged_Tag0"
+# For RIGHT VERTEX SCENARIO:
+#  * default you should add is diagonal process from given category 
+#  * if few events in diagonal process then may need to change the category aswell (see catRVMap)
+#  * map must contain entry for all cats being processed (for replacement proc and cat)
+globalReplacementMap['mass']['procRVMap'] = od()
+globalReplacementMap["mass"]["procRVMap"]["Untagged_Tag0"] = "GG2H"
+globalReplacementMap["mass"]["procRVMap"]["Untagged_Tag1"] = "GG2H"
+globalReplacementMap["mass"]["procRVMap"]["Untagged_Tag2"] = "GG2H"
+globalReplacementMap["mass"]["procRVMap"]["Untagged_Tag3"] = "GG2H"
+globalReplacementMap["mass"]["procRVMap"]["VBF_Tag0"] = "VBF"
+globalReplacementMap["mass"]["procRVMap"]["VBF_Tag1"] = "VBF"
+globalReplacementMap["mass"]["procRVMap"]["VBF_Tag2"] = "VBF"
+# Replacement category for RV fit
+globalReplacementMap["mass"]["catRVMap"] = od()
+globalReplacementMap["mass"]["catRVMap"]["Untagged_Tag0"] = "Untagged_Tag0"
+globalReplacementMap["mass"]["catRVMap"]["Untagged_Tag1"] = "Untagged_Tag1"
+globalReplacementMap["mass"]["catRVMap"]["Untagged_Tag2"] = "Untagged_Tag2"
+globalReplacementMap["mass"]["catRVMap"]["Untagged_Tag3"] = "Untagged_Tag3"
+globalReplacementMap["mass"]["catRVMap"]["VBF_Tag0"] = "VBF_Tag0"
+globalReplacementMap["mass"]["catRVMap"]["VBF_Tag1"] = "VBF_Tag1"
+globalReplacementMap["mass"]["catRVMap"]["VBF_Tag2"] = "VBF_Tag2"
 
 # STXS analysis
 globalReplacementMap['STXS'] = od()

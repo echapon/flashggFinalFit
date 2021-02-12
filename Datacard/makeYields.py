@@ -97,7 +97,8 @@ for year in years:
     else: _cat = "%s_%s"%(opt.cat,year)
 
     # Input flashgg ws 
-    _inputWSFile = glob.glob("%s/*M%s*_%s.root"%(inputWSDirMap[year],opt.mass,proc))[0]
+    # _inputWSFile = glob.glob("%s/*M%s*_%s.root"%(inputWSDirMap[year],opt.mass,proc))[0]
+    _inputWSFile = glob.glob("%s/output_%s_%s.root"%(inputWSDirMap[year],proc,opt.mass))[0]
     _nominalDataName = "%s_%s_%s_%s"%(_proc_s0,opt.mass,sqrts__,opt.cat)
 
     # If opt.skipZeroes check nominal yield if 0 then do not add

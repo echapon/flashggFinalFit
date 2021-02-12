@@ -35,7 +35,7 @@ def get_options():
 WSFileNames = extractWSFileNames(opt.inputWSDir)
 if not WSFileNames: leave()
 allCats = extractListOfCats(WSFileNames)
-if containsNOTAG(WSFileNames): allCats += ",NOTAG"
+if containsNOTAG(WSFileNames): allCats += ",NoTag"
 else:
   print " --> [ERROR] getEffAcc.py requires NOTAG dataset. Must use standard weights method in signalFit.py"
   leave()
@@ -52,7 +52,8 @@ for _mp in opt.massPoints.split(","):
   for _proc in opt.procs.split(","):
     print "    * proc = %s"%_proc
     # Find corresponding file
-    _WSFileName = glob.glob("%s/output*M%s*%s.root"%(opt.inputWSDir,_mp,_proc))[0]
+    # _WSFileName = glob.glob("%s/output*M%s*%s.root"%(opt.inputWSDir,_mp,_proc))[0]
+    _WSFileName = glob.glob("%s/output_%s_%s.root"%(opt.inputWSDir,_proc,_mp))[0]
     f = ROOT.TFile(_WSFileName,'read')
     inputWS = f.Get(inputWSName__)
 

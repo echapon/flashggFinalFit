@@ -61,7 +61,7 @@ def containsNOTAG( _listOfWSFileNames ):
   ws = f0.Get(inputWSName__)
   allData = ws.allData()
   for d in allData:
-    if "NOTAG" in d.GetName(): return True
+    if "NoTag" in d.GetName(): return True
   return False
 
 # Function to return signal production (and decay extension if required) from input file name
