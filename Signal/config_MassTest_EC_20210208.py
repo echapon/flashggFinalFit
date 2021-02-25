@@ -4,8 +4,9 @@ signalScriptCfg = {
   
   # Setup
   'inputWSDir':'/afs/cern.ch/user/e/echapon/workspace/private/Higgs/CMSSW_10_6_8/src/flashgg/Systematics/MassTest/2016_Sig', 
-  'procs':'ggh,wh,vbf,tth', # if auto: inferred automatically from filenames
-  'cats':'auto', # if auto: inferred automatically from (0) workspace
+  'procs':'ggh,wh,vbf,tth,zh', # if auto: inferred automatically from filenames
+  # 'cats':'auto', # if auto: inferred automatically from (0) workspace
+  'cats':'UntaggedTag_0,UntaggedTag_1,UntaggedTag_2,UntaggedTag_3,VBFTag_0,VBFTag_1,VBFTag_2', # if auto: inferred automatically from (0) workspace
   'ext':'MassTest_EC_20210208',
   'analysis':'mass', # To specify which replacement dataset mapping (defined in ./python/replacementMap.py)
   'year':'2016', # Use 'combined' if merging all years: not recommended

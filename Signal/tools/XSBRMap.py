@@ -28,8 +28,14 @@ globalXSBRMap['example']['THQ'] = {'mode':'tHq'}
 globalXSBRMap['example']['THW'] = {'mode':'tHW'}
 # ...
 
-# name a copy for the mass analysis
-globalXSBRMap['mass'] = globalXSBRMap['example']
+# mass analysis
+globalXSBRMap['mass'] = od()
+globalXSBRMap['mass']['decay'] = {'mode':'hgg'}
+globalXSBRMap['mass']['ggh'] = {'mode':'ggH'}
+globalXSBRMap['mass']['vbf'] = {'mode':'qqH'}
+globalXSBRMap['mass']['wh'] = {'mode':'WH'}
+globalXSBRMap['mass']['zh'] = {'mode':'qqZH'}
+globalXSBRMap['mass']['tth'] = {'mode':'ttH'}
 
 
 # STXS analysis: add factor for bin composition
