@@ -213,9 +213,11 @@ for ir,r in data[data['type']=='sig'].iterrows():
   inputWS = f_in.Get(inputWSName__)
   # Extract nominal RooDataSet and yield
   rdata_nominal = inputWS.data(r.nominalDataName)
+  rdata_pdfWeights = inputWS.data(r.nominalDataName+'_pdfWeights')
 
   # Calculate nominal yield, sumw2 and add COW correction for in acceptance events
   contents = ""
+  contents_pdfWeights = ""
   y, y_COWCorr = 0, 0
   sumw2 = 0
   for i in range(0,rdata_nominal.numEntries()):
@@ -224,7 +226,10 @@ for ir,r in data[data['type']=='sig'].iterrows():
     y += w
     sumw2 += w*w
     # Extract contents from first event
-    if i == 0: contents = p.contentsString()
+    if i == 0: 
+       contents = p.contentsString()
+       p2 = rdata_pdfWeights.get(0)
+       contents_pdfWeights = p2.contentsString()
     if not opt.skipCOWCorr:
       f_COWCorr = p.getRealValue("centralObjectWeight") if "centralObjectWeight" in contents else 1.
       f_NNLOPS = abs(p.getRealValue("NNLOPSweight")) if "NNLOPSweight" in contents else 1.
@@ -249,8 +254,8 @@ for ir,r in data[data['type']=='sig'].iterrows():
 	else:
 	  data.at[ir,"%s_yield"%s] = experimentalSystYields[s]
 
-    # For theoretical systematics:
-    theorySystYields = calcSystYields(r['nominalDataName'],contents,inputWS,theoryFactoryType,skipCOWCorr=opt.skipCOWCorr,proc=r['proc'],year=r['year'],ignoreWarnings=opt.ignore_warnings)
+    # For theoretical systematics: look inside pdfWeights dataset
+    theorySystYields = calcSystYields(r['nominalDataName']+'_pdfWeights',contents_pdfWeights,inputWS,theoryFactoryType,skipCOWCorr=opt.skipCOWCorr,proc=r['proc'],year=r['year'],ignoreWarnings=opt.ignore_warnings)
     for s,f in theoryFactoryType.iteritems():
       if f in ['a_w','a_h']: 
 	for direction in ['up','down']: 

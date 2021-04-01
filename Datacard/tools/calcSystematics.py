@@ -124,12 +124,12 @@ def calcSystYields(_nominalDataName,_nominalDataContents,_inputWS,_systFactoryTy
     elif f == "a_w":
       if( "%sUp01sigma"%s not in _nominalDataContents )|( "%sDown01sigma"%s not in _nominalDataContents ):
 	systToSkip.append(s)
-	print " --> [%s] Weight in nominal RooDataSet for systematic (%s) does not exist for (%s,%s). %s"%(errMessage,s,proc,year,errString)
+	print " --> [%s] Weight in nominal RooDataSet %s for systematic (%s) does not exist for (%s,%s). %s"%(errMessage,_nominalDataName,s,proc,year,errString)
 	if not ignoreWarnings: sys.exit(1) 
     else:
       if s not in _nominalDataContents:
 	systToSkip.append(s)
-	print " --> [%s] Weight in nominal RooDataSet for systematic (%s) does not exist for (%s,%s). %s"%(errMessage,s,proc,year,errString)
+	print " --> [%s] Weight in nominal RooDataSet %s for systematic (%s) does not exist for (%s,%s). %s"%(errMessage,_nominalDataName,s,proc,year,errString)
 	if not ignoreWarnings: sys.exit(1)
 
   # Loop over events and extract reweighted yields
