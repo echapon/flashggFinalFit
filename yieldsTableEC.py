@@ -136,9 +136,17 @@ for c in cats:
    tot[c] = sum([dic[p][c] for p in procs if p != "data"])
 
 # print table in dirty format
+# header
 line = "\tTotal\t"
 for p in procs: line = line + p + "\t"
 print(line)
+
+# total / process
+line = "Total \t" + "{:.2f}".format(sum([tot[c]*normfactor for c in cats])) + "\t"
+for p in procs: line = line + "{:.2f}".format(sum([dic[p][c]*normfactor for c in cats])) + "\t"
+print(line)
+
+# categories
 for c in cats:
    if tot[c] == 0:
       continue
@@ -150,9 +158,17 @@ for c in cats:
 # and now the LaTeX version
 print("\n\n")
 
+# header
 line = "& Total &"
 for p in procs: line = line + p + (" & " if p != procs[-1] else r"\\")
 print(line)
+
+# total / process
+line = "Total &" + "{:.2f}".format(sum([tot[c]*normfactor for c in cats])) + " & "
+for p in procs: line = line + "{:.2f}".format(sum([dic[p][c]*normfactor for c in cats])) + (" & " if p != procs[-1] else r"\\")
+print(line)
+
+# categories
 for c in cats:
    if tot[c] == 0:
       continue
